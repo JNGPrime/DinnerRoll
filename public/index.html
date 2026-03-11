@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#8B4513"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="DinnerRoll"/>
+  <title>DinnerRoll - Dinner Decisions, Handled</title>
+  <meta name="description" content="Can't decide what's for dinner? Spin once. That's dinner. Cook at home, order out, or let DinnerRoll surprise you."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="DinnerRoll"/>
+  <meta property="og:description" content="Can't decide what's for dinner? Spin once. That's dinner."/>
+  <meta property="og:image" content="/images/og-preview.png"/>
+  <meta property="og:site_name" content="DinnerRoll"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="DinnerRoll"/>
+  <meta name="twitter:description" content="Can't decide what's for dinner? Spin once. That's dinner."/>
+  <meta name="twitter:image" content="/images/og-preview.png"/>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+</head>
+<body>
+
+<nav class="app-nav">
+  <a href="/" class="nav-logo" data-testid="link-nav-home"><img src="/icons/icon-192.png" alt="DinnerRoll icon"/>DinnerRoll</a>
+  <div class="nav-links">
+    <a href="/" class="nav-link active" data-testid="link-nav-home-page">Home</a>
+    <a href="/family.html" class="nav-link" data-testid="link-nav-cook">Cook</a>
+    <a href="/order.html" class="nav-link" data-testid="link-nav-order">Order</a>
+    <a href="/my-pantry" class="nav-link" data-testid="link-nav-pantry">My Pantry</a>
+    <a href="/pantry" class="nav-link" data-testid="link-nav-recipes-pantry">Find Recipes</a>
+    <a href="/recipes" class="nav-link" data-testid="link-nav-recipes">Browse All</a>
+    <a href="/fast-food" class="nav-link" data-testid="link-nav-fast-food">Fast Food</a>
+    <a href="/meal-planner" class="nav-link" data-testid="link-nav-meal-planner">Planner</a>
+    <a href="/history" class="nav-link" data-testid="link-nav-history">History</a>
+    <a href="/family" class="nav-link" data-testid="link-nav-family">Family</a>
+  </div>
+  <a href="/profile.html" class="nav-profile" data-testid="link-nav-profile">Profile</a>
+</nav>
+
+<div class="home-page">
+
+  <!-- Hero Section -->
+  <section class="hero-section" data-testid="section-hero">
+    <div class="hero-bg" style="background-image: url('/images/hero-main.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title" data-testid="text-hero-title">
+        No Arguing.<br/>No Thinking.<br/><span class="hero-highlight">Just Eat.</span>
+      </h1>
+      <p class="hero-subtitle" data-testid="text-hero-subtitle">
+        Roll the dinner rolls. Dinner is decided. That's it.
+      </p>
+      <div class="hero-actions">
+        <button class="hero-btn hero-btn-primary" onclick="goCook()" data-testid="button-hero-cook">
+          <span class="hero-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/><path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/><path d="M5.71 17.11a17.04 17.04 0 0 1 11.4-11.4"/></svg>
+          </span>
+          <span class="hero-btn-text">
+            <span class="hero-btn-label">Cook at Home</span>
+            <span class="hero-btn-sub">55+ recipes</span>
+          </span>
+        </button>
+        <button class="hero-btn hero-btn-secondary" onclick="goOrder()" data-testid="button-hero-order">
+          <span class="hero-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </span>
+          <span class="hero-btn-text">
+            <span class="hero-btn-label">Order Out</span>
+            <span class="hero-btn-sub">90+ spots</span>
+          </span>
+        </button>
+        <button class="hero-btn hero-btn-surprise" onclick="goSurprise()" data-testid="button-surprise-mode">
+          <span class="hero-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+          </span>
+          <span class="hero-btn-text">
+            <span class="hero-btn-label">Surprise Me!</span>
+            <span class="hero-btn-sub">Fate decides</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mode Cards Section -->
+  <section class="modes-section" data-testid="section-modes">
+    <h2 class="section-heading">Pick Your Play</h2>
+    <p class="section-subheading">Three ways to end the dinner debate tonight</p>
+    
+    <div class="mode-cards">
+      <button class="mode-card" onclick="goCook()" data-testid="button-cook-mode">
+        <div class="mode-card-img" style="background-image: url('/images/hero-cook.jpg')"></div>
+        <div class="mode-card-overlay"></div>
+        <div class="mode-card-content">
+          <span class="mode-card-badge cook-badge">COOK</span>
+          <h3 class="mode-card-title">Cook at Home</h3>
+          <p class="mode-card-desc">Roll for 55+ recipes. Filter by style, diet, budget, and family size.</p>
+          <span class="mode-card-cta">Roll Now</span>
+        </div>
+      </button>
+
+      <button class="mode-card" onclick="goOrder()" data-testid="button-order-mode">
+        <div class="mode-card-img" style="background-image: url('/images/hero-order.jpg')"></div>
+        <div class="mode-card-overlay"></div>
+        <div class="mode-card-content">
+          <span class="mode-card-badge order-badge">ORDER</span>
+          <h3 class="mode-card-title">Order Out</h3>
+          <p class="mode-card-desc">90+ restaurants. Direct links to Uber Eats, DoorDash & more. One roll decides.</p>
+          <span class="mode-card-cta">Pick a Place</span>
+        </div>
+      </button>
+
+      <button class="mode-card" onclick="goSurprise()" data-testid="button-surprise-card">
+        <div class="mode-card-img" style="background-image: url('/images/hero-main.jpg')"></div>
+        <div class="mode-card-overlay surprise-overlay"></div>
+        <div class="mode-card-content">
+          <span class="mode-card-badge surprise-badge">ROLL</span>
+          <h3 class="mode-card-title">Surprise Me!</h3>
+          <p class="mode-card-desc">Feeling adventurous? Let fate pick everything. Cook or order - the roll decides.</p>
+          <span class="mode-card-cta">Let's Go!</span>
+        </div>
+      </button>
+    </div>
+  </section>
+
+  <!-- Pantry Feature Section -->
+  <section class="pantry-feature" data-testid="section-pantry-feature">
+    <div class="pantry-feature-bg" style="background-image: url('/images/hero-pantry.jpg')"></div>
+    <div class="pantry-feature-overlay"></div>
+    <div class="pantry-feature-content">
+      <span class="pantry-feature-label">What Makes Us Different</span>
+      <h2 class="pantry-feature-title">Your Pantry = Your Menu</h2>
+      <p class="pantry-feature-desc">
+        Scan or snap a photo of your pantry, fridge, or freezer. Our AI identifies every ingredient and instantly matches you with recipes you can actually make tonight. No more wasted food. No more guessing.
+      </p>
+      <div class="pantry-feature-steps">
+        <div class="pantry-step">
+          <div class="pantry-step-num">1</div>
+          <div class="pantry-step-text">
+            <strong>Scan or Snap</strong>
+            <span>Barcode scan or take a photo of your kitchen</span>
+          </div>
+        </div>
+        <div class="pantry-step">
+          <div class="pantry-step-num">2</div>
+          <div class="pantry-step-text">
+            <strong>AI Matches</strong>
+            <span>We find recipes using what you already have</span>
+          </div>
+        </div>
+        <div class="pantry-step">
+          <div class="pantry-step-num">3</div>
+          <div class="pantry-step-text">
+            <strong>Cook or Shop</strong>
+            <span>Start cooking or order missing items from H-E-B, Kroger, or Favor</span>
+          </div>
+        </div>
+      </div>
+      <div class="pantry-feature-actions">
+        <button class="pantry-feature-btn" onclick="goPantry()" data-testid="button-pantry-mode">
+          Stock My Pantry
+        </button>
+        <a href="/pantry" class="pantry-feature-link" data-testid="link-find-recipes">
+          Find Recipes by Ingredient
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-section" data-testid="section-how">
+    <h2 class="section-heading">Dead Simple</h2>
+    <p class="section-subheading">Three steps to dinner. No debates required.</p>
+    
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-icon">1</div>
+        <h3>Pick Your Mode</h3>
+        <p>Cook, order, or let us surprise you</p>
+      </div>
+      <div class="how-step-arrow">></div>
+      <div class="how-step">
+        <div class="how-step-icon">2</div>
+        <h3>Spin the Rolls</h3>
+        <p>Watch the dinner rolls land on tonight's pick</p>
+      </div>
+      <div class="how-step-arrow">></div>
+      <div class="how-step">
+        <div class="how-step-icon">3</div>
+        <h3>Eat!</h3>
+        <p>Get the recipe or order with one tap</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install App Banner -->
+  <section class="install-banner" id="install-banner" style="display:none;" data-testid="section-install-banner">
+    <div class="install-banner-content">
+      <div class="install-banner-text">
+        <h3 class="install-banner-title">Get DinnerRoll on Your Phone</h3>
+        <p class="install-banner-desc">Add to your home screen for instant access. No app store needed.</p>
+      </div>
+      <button class="install-banner-btn" id="install-btn" data-testid="button-install-app" onclick="installApp()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Add to Home Screen
+      </button>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta" data-testid="section-final-cta">
+    <h2>Stop the dinner debate.</h2>
+    <p>Roll once. That's dinner.</p>
+    <button class="hero-btn hero-btn-primary" onclick="goCook()" data-testid="button-final-cta">
+      Let's Roll
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="home-footer">
+    <div class="footer-content">
+      <span class="footer-logo"><img src="/icons/icon-192.png" alt=""/>DinnerRoll</span>
+      <span class="footer-tagline">Dinner decisions, handled.</span>
+      <div class="footer-legal" data-testid="footer-legal-links">
+        <a href="/legal" class="footer-legal-link" data-testid="link-footer-legal">Terms & Privacy</a>
+        <span class="footer-legal-sep">|</span>
+        <a href="/legal" class="footer-legal-link" data-testid="link-footer-allergy">Allergy Disclaimer</a>
+      </div>
+      <p class="footer-copyright">Not a medical or dietary advisory service. Use at your own risk.</p>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Wheel Popup Overlay -->
+<div id="wheel-overlay" class="wheel-overlay" data-testid="wheel-overlay">
+  <div class="wheel-overlay-inner">
+    <button class="wheel-overlay-close" id="wheel-overlay-close" data-testid="button-close-wheel" onclick="closeWheelOverlay()">&times;</button>
+    <div id="home-wheel-container"></div>
+    <div id="confetti-container" class="confetti-container"></div>
+    <div id="wheel-result-card" class="wheel-result-card" style="display:none;" data-testid="wheel-result-card">
+      <h3 id="wheel-result-name" class="wheel-result-name" data-testid="text-wheel-result-name"></h3>
+      <p id="wheel-result-desc" class="wheel-result-desc" data-testid="text-wheel-result-desc"></p>
+      <div id="wheel-result-meta" class="wheel-result-meta" data-testid="wheel-result-meta"></div>
+    </div>
+    <div class="wheel-overlay-actions" id="wheel-overlay-actions" style="display:none;">
+      <a id="wheel-action-go" href="#" class="wheel-overlay-action-btn primary" data-testid="button-wheel-go">View Recipe</a>
+      <div id="wheel-delivery-links" class="wheel-delivery-links" style="display:none;">
+        <a id="wheel-uber" href="#" target="_blank" class="delivery-btn-large ubereats" data-testid="button-wheel-uber">Uber Eats</a>
+        <a id="wheel-doordash" href="#" target="_blank" class="delivery-btn-large doordash" data-testid="button-wheel-doordash">DoorDash</a>
+        <a id="wheel-grubhub" href="#" target="_blank" class="delivery-btn-large grubhub" data-testid="button-wheel-grubhub">Grubhub</a>
+      </div>
+      <button class="wheel-overlay-action-btn" onclick="respinHomeWheel()" data-testid="button-wheel-respin">Spin Again</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-tab-bar" data-testid="nav-bottom-tabs">
+  <div class="tab-items">
+    <a href="/" class="tab-item active" data-testid="tab-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/family.html" class="tab-item" data-testid="tab-cook">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/><path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/></svg>
+      Cook
+    </a>
+    <a href="/order.html" class="tab-item" data-testid="tab-order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      Order
+    </a>
+    <a href="/my-pantry" class="tab-item" data-testid="tab-pantry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><path d="m15 7-3 3-3-3"/></svg>
+      Pantry
+    </a>
+    <a href="/profile.html" class="tab-item" data-testid="tab-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </div>
+</nav>
+
+<script src="spin-wheel.js"></script>
+<script>
+  var allRecipes = {
+    "Chicken Tacos": { desc: "Easy weeknight tacos with seasoned chicken.", prep: 10, cook: 20, servings: 4 },
+    "Mac & Cheese": { desc: "Creamy, cheesy comfort in every bite.", prep: 10, cook: 20, servings: 4 },
+    "Pizza Night": { desc: "Homemade pizza with your favorite toppings.", prep: 20, cook: 15, servings: 4 },
+    "Spaghetti & Meat Sauce": { desc: "Classic Italian comfort food the whole family loves.", prep: 10, cook: 30, servings: 4 },
+    "Grilled Burgers": { desc: "Classic American burgers hot off the grill.", prep: 10, cook: 15, servings: 4 },
+    "Chicken Nuggets & Fries": { desc: "Kid-approved crispy chicken with golden fries.", prep: 15, cook: 25, servings: 4 },
+    "Enchiladas": { desc: "Rolled tortillas filled with meat and cheese, smothered in enchilada sauce.", prep: 15, cook: 30, servings: 6 },
+    "Nachos Grande": { desc: "Loaded nachos piled high with all the toppings.", prep: 10, cook: 15, servings: 4 },
+    "Quesadillas": { desc: "Crispy tortillas stuffed with melted cheese.", prep: 5, cook: 10, servings: 4 },
+    "Grilled Chicken & Veggies": { desc: "Healthy grilled chicken with seasonal vegetables.", prep: 15, cook: 20, servings: 4 },
+    "Pancakes & Bacon": { desc: "Classic breakfast-for-dinner with fluffy pancakes and crispy bacon.", prep: 10, cook: 20, servings: 4 },
+    "Waffles & Sausage": { desc: "Crispy waffles with breakfast sausage links.", prep: 10, cook: 20, servings: 4 },
+    "Breakfast Burritos": { desc: "Hearty burritos stuffed with eggs, cheese, and sausage.", prep: 10, cook: 15, servings: 4 },
+    "French Toast & Fruit": { desc: "Golden French toast with fresh fruit and powdered sugar.", prep: 10, cook: 15, servings: 4 },
+    "Salmon & Asparagus": { desc: "Elegant but simple sheet pan dinner.", prep: 10, cook: 15, servings: 4 },
+    "Buddha Bowl": { desc: "Nourishing bowl packed with grains and veggies.", prep: 15, cook: 30, servings: 4 },
+    "Pot Roast": { desc: "Tender, slow-cooked beef with vegetables.", prep: 20, cook: 180, servings: 6 },
+    "Baked Ziti": { desc: "Cheesy pasta bake with layers of ricotta and mozzarella.", prep: 15, cook: 35, servings: 6 },
+    "Meatloaf & Mashed Potatoes": { desc: "Classic comfort dinner with savory meatloaf.", prep: 15, cook: 60, servings: 6 },
+    "Chicken Stir Fry": { desc: "Savory chicken stir fry with crisp vegetables in a ginger sauce.", prep: 15, cook: 15, servings: 4 },
+    "Fried Rice": { desc: "Quick and easy one-pan dinner.", prep: 10, cook: 15, servings: 4 },
+    "Ramen Bowls": { desc: "Quick homemade ramen with toppings.", prep: 10, cook: 15, servings: 4 },
+    "Biscuits & Gravy": { desc: "Southern-style biscuits smothered in sausage gravy.", prep: 10, cook: 25, servings: 4 },
+    "Omelettes & Hash Browns": { desc: "Custom omelettes with crispy hash browns on the side.", prep: 10, cook: 20, servings: 4 },
+    "Chicken Quesadillas": { desc: "Crispy tortillas stuffed with seasoned chicken and melted cheese.", prep: 10, cook: 15, servings: 4 },
+    "Stir Fry Veggies": { desc: "Colorful vegetable stir fry with savory sauce.", prep: 15, cook: 10, servings: 4 },
+    "Hot Dogs & Tater Tots": { desc: "Quick and easy crowd-pleaser for kids.", prep: 5, cook: 20, servings: 4 },
+    "Beef Tacos": { desc: "Ground beef tacos with all the fixings.", prep: 10, cook: 15, servings: 4 },
+    "Egg Scramble & Toast": { desc: "Simple scrambled eggs with buttered toast.", prep: 5, cook: 10, servings: 4 },
+    "Chicken Fried Rice": { desc: "Quick fried rice loaded with chicken and vegetables.", prep: 10, cook: 15, servings: 4 }
+  };
+  var allRecipeNames = Object.keys(allRecipes);
+
+  function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function buildCookSegments() {
+    var shuffled = allRecipeNames.slice().sort(function() { return Math.random() - 0.5; });
+    var picked = shuffled.slice(0, 10);
+    return picked.map(function(name) {
+      return { label: name, icon: name.charAt(0) };
+    });
+  }
+
+  var orderSegments = [
+    { label: "Chick-fil-A", icon: "C" },
+    { label: "Domino's", icon: "P" },
+    { label: "Chipotle", icon: "T" },
+    { label: "Wingstop", icon: "W" },
+    { label: "McDonald's", icon: "M" },
+    { label: "Panda Express", icon: "A" },
+    { label: "Popeyes", icon: "C" },
+    { label: "Olive Garden", icon: "I" },
+    { label: "Taco Bell", icon: "T" },
+    { label: "Buffalo Wild Wings", icon: "W" },
+    { label: "Five Guys", icon: "B" },
+    { label: "Applebee's", icon: "A" },
+  ];
+
+  function buildSurpriseSegments() {
+    var recipes = allRecipeNames.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 5);
+    var restaurants = orderSegments.slice().sort(function() { return Math.random() - 0.5; }).slice(0, 5);
+    var segs = [];
+    for (var i = 0; i < 5; i++) {
+      segs.push({ label: recipes[i], icon: recipes[i].charAt(0), mode: "cook" });
+      segs.push({ label: restaurants[i].label, icon: restaurants[i].icon, mode: "order" });
+    }
+    return segs;
+  }
+
+  var homeWheel = null;
+  var currentMode = null;
+  var currentSegments = null;
+  var lastWinner = null;
+
+  function getWheelTitle(mode) {
+    if (mode === "cook") return "Cook at Home";
+    if (mode === "order") return "Order Out";
+    return "Surprise Me!";
+  }
+
+  function getWheelSubtitle(mode) {
+    if (mode === "cook") return "Spin for tonight's dinner";
+    if (mode === "order") return "Where are we ordering from?";
+    return "Cook or order? Fate decides!";
+  }
+
+  function openWheelOverlay(mode) {
+    currentMode = mode;
+    lastWinner = null;
+    var overlay = document.getElementById("wheel-overlay");
+    var actions = document.getElementById("wheel-overlay-actions");
+    var resultCard = document.getElementById("wheel-result-card");
+    if (actions) actions.style.display = "none";
+    if (resultCard) resultCard.style.display = "none";
+
+    if (mode === "cook") currentSegments = buildCookSegments();
+    else if (mode === "order") currentSegments = orderSegments;
+    else currentSegments = buildSurpriseSegments();
+
+    homeWheel = createSpinWheel("home-wheel-container", {
+      segments: currentSegments,
+      size: 170,
+      title: getWheelTitle(mode),
+      subtitle: getWheelSubtitle(mode),
+      onResult: function(winner) {
+        lastWinner = winner;
+        launchHomeConfetti();
+        showWheelResult(mode, winner);
+      },
+      onSpin: function() {
+        var idx = Math.floor(Math.random() * currentSegments.length);
+        homeWheel.spin(idx);
+      }
+    });
+
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeWheelOverlay() {
+    var overlay = document.getElementById("wheel-overlay");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  function respinHomeWheel() {
+    var actions = document.getElementById("wheel-overlay-actions");
+    var resultCard = document.getElementById("wheel-result-card");
+    if (actions) actions.style.display = "none";
+    if (resultCard) resultCard.style.display = "none";
+
+    if (currentMode === "cook") currentSegments = buildCookSegments();
+    else if (currentMode === "surprise") currentSegments = buildSurpriseSegments();
+
+    homeWheel = createSpinWheel("home-wheel-container", {
+      segments: currentSegments,
+      size: 170,
+      title: getWheelTitle(currentMode),
+      subtitle: getWheelSubtitle(currentMode),
+      onResult: function(winner) {
+        lastWinner = winner;
+        launchHomeConfetti();
+        showWheelResult(currentMode, winner);
+      },
+      onSpin: function() {
+        var idx = Math.floor(Math.random() * currentSegments.length);
+        homeWheel.spin(idx);
+      }
+    });
+
+    if (homeWheel && !homeWheel.isSpinning()) {
+      var idx = Math.floor(Math.random() * currentSegments.length);
+      homeWheel.spin(idx);
+    }
+  }
+
+  function showWheelResult(mode, winner) {
+    var actions = document.getElementById("wheel-overlay-actions");
+    var goBtn = document.getElementById("wheel-action-go");
+    var deliveryLinks = document.getElementById("wheel-delivery-links");
+    var resultCard = document.getElementById("wheel-result-card");
+    var resultName = document.getElementById("wheel-result-name");
+    var resultDesc = document.getElementById("wheel-result-desc");
+    var resultMeta = document.getElementById("wheel-result-meta");
+    if (!actions || !goBtn) return;
+
+    var isOrderResult = (mode === "order") || (mode === "surprise" && winner.mode === "order");
+    var isCookResult = (mode === "cook") || (mode === "surprise" && winner.mode === "cook");
+
+    deliveryLinks.style.display = isOrderResult ? "flex" : "none";
+    goBtn.style.display = "none";
+
+    if (isOrderResult) {
+      var term = winner.label;
+      resultName.textContent = winner.label;
+      resultDesc.textContent = "Order from " + winner.label + " tonight!";
+      resultMeta.innerHTML = "";
+      if (resultCard) resultCard.style.display = "block";
+
+      document.getElementById("wheel-uber").href = "https://www.ubereats.com/search?q=" + encodeURIComponent(term);
+      document.getElementById("wheel-doordash").href = "https://www.doordash.com/search/store/" + encodeURIComponent(term);
+      document.getElementById("wheel-grubhub").href = "https://www.grubhub.com/search?queryText=" + encodeURIComponent(term);
+    } else if (isCookResult) {
+      var recipe = allRecipes[winner.label];
+      resultName.textContent = winner.label;
+      if (recipe) {
+        resultDesc.textContent = recipe.desc;
+        var cookMins = recipe.cook >= 60 ? Math.floor(recipe.cook / 60) + "h " + (recipe.cook % 60 > 0 ? (recipe.cook % 60) + "m" : "") : recipe.cook + " min";
+        resultMeta.innerHTML = '<span>Prep: ' + recipe.prep + ' min</span><span>Cook: ' + cookMins + '</span><span>Serves ' + recipe.servings + '</span>';
+      } else {
+        resultDesc.textContent = "Tonight's dinner is decided!";
+        resultMeta.innerHTML = "";
+      }
+      if (resultCard) resultCard.style.display = "block";
+      goBtn.href = "/family.html";
+      goBtn.target = "_self";
+      goBtn.textContent = "Browse More Recipes";
+      goBtn.style.display = "inline-flex";
+    }
+
+    actions.style.display = "flex";
+  }
+
+  function launchHomeConfetti() {
+    var container = document.getElementById("confetti-container");
+    if (!container) return;
+    container.innerHTML = "";
+    var colors = ["#f0b429", "#e07b39", "#FF6B6B", "#4ECDC4", "#FFE66D", "#DDA0DD", "#95E1D3", "#fff"];
+    for (var i = 0; i < 60; i++) {
+      var piece = document.createElement("div");
+      piece.className = "confetti-piece";
+      var size = 4 + Math.random() * 10;
+      piece.style.width = (Math.random() > 0.5 ? size * 0.4 : size) + "px";
+      piece.style.height = size + "px";
+      piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+      piece.style.left = Math.random() * 100 + "%";
+      piece.style.animationDuration = (1 + Math.random() * 2) + "s";
+      piece.style.animationDelay = Math.random() * 0.5 + "s";
+      piece.style.opacity = (0.7 + Math.random() * 0.3).toString();
+      container.appendChild(piece);
+    }
+    setTimeout(function() { container.innerHTML = ""; }, 4000);
+  }
+
+  function getPantryItems() {
+    try { return JSON.parse(localStorage.getItem("dinnerroll_my_pantry") || "[]"); }
+    catch(e) { return []; }
+  }
+
+  function showPantryGateModal() {
+    if (document.getElementById('pantry-gate-modal')) return;
+    var modal = document.createElement('div');
+    modal.id = 'pantry-gate-modal';
+    modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);';
+    modal.innerHTML =
+      '<div style="background:#2d1810;border:2px solid #f0b429;border-radius:16px;padding:2rem;max-width:420px;width:90%;text-align:center;color:white;">' +
+        '<h2 style="font-size:1.5rem;font-weight:800;color:#f0b429;margin-bottom:0.5rem;">Stock Your Pantry First</h2>' +
+        '<p style="color:rgba(255,255,255,0.7);margin-bottom:1rem;font-size:0.95rem;line-height:1.5;">Cook at Home works with your pantry. Add some items to your pantry and we\'ll match you with recipes you can actually make tonight.</p>' +
+        '<div style="display:flex;gap:0.5rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;">' +
+          '<button onclick="window.location.href=\'/my-pantry\'" style="background:#f0b429;color:#2d1810;border:none;padding:0.7rem 1.5rem;border-radius:8px;font-weight:700;font-size:1rem;cursor:pointer;" data-testid="button-go-pantry">Stock My Pantry</button>' +
+          '<button onclick="document.getElementById(\'pantry-gate-modal\').remove()" style="background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.2);padding:0.7rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.9rem;cursor:pointer;">Close</button>' +
+        '</div>' +
+        '<p style="color:rgba(255,255,255,0.4);font-size:0.75rem;">Unlock Cook at Home for $4.99/mo or $29.99 lifetime.</p>' +
+        '<a href="/purchase" style="color:#f0b429;font-size:0.8rem;text-decoration:underline;">View pricing</a>' +
+      '</div>';
+    document.body.appendChild(modal);
+  }
+
+  function goCook() {
+    var pantry = getPantryItems();
+    if (pantry.length === 0) {
+      showPantryGateModal();
+      return;
+    }
+    openWheelOverlay("cook");
+  }
+  function goOrder() { openWheelOverlay("order"); }
+  function goSurprise() { openWheelOverlay("surprise"); }
+  function goPantry() { window.location.href = "/my-pantry"; }
+</script>
+
+<script>
+  var deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    var banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'block';
+  });
+
+  window.addEventListener('appinstalled', function() {
+    deferredPrompt = null;
+    var banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+  });
+
+  function installApp() {
+    if (!deferredPrompt) {
+      alert('To install DinnerRoll, use your browser menu and tap "Add to Home Screen".');
+      return;
+    }
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(result) {
+      deferredPrompt = null;
+      if (result.outcome === 'accepted') {
+        var banner = document.getElementById('install-banner');
+        if (banner) banner.style.display = 'none';
+      }
+    });
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js')
+        .then(function(reg) { console.log('SW registered'); })
+        .catch(function(err) { console.log('SW registration failed:', err); });
+    });
+  }
+
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    var banner = document.getElementById('install-banner');
+    if (banner) banner.style.display = 'none';
+  }
+</script>
+
+</body>
+</html>

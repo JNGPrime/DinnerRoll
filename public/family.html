@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#8B4513"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="DinnerRoll"/>
+  <title>Cook at Home - DinnerRoll</title>
+  <meta name="description" content="55+ home cooking recipes with filters for family size, diet, and budget. Spin the wheel and cook something great tonight."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Cook at Home - DinnerRoll"/>
+  <meta property="og:description" content="55+ recipes. Spin the wheel and cook something great tonight."/>
+  <meta property="og:image" content="/images/og-preview.png"/>
+  <meta property="og:site_name" content="DinnerRoll"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Cook at Home - DinnerRoll"/>
+  <meta name="twitter:description" content="55+ recipes. Spin the wheel and cook something great tonight."/>
+  <meta name="twitter:image" content="/images/og-preview.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+</head>
+<body class="family-page">
+
+<nav class="app-nav">
+  <a href="/" class="nav-logo" data-testid="link-nav-home"><img src="/icons/icon-192.png" alt="DinnerRoll icon"/>DinnerRoll</a>
+  <div class="nav-links">
+    <a href="/" class="nav-link" data-testid="link-nav-home-page">Home</a>
+    <a href="/family.html" class="nav-link active" data-testid="link-nav-cook">Cook</a>
+    <a href="/order.html" class="nav-link" data-testid="link-nav-order">Order</a>
+    <a href="/my-pantry" class="nav-link" data-testid="link-nav-pantry">My Pantry</a>
+    <a href="/pantry" class="nav-link" data-testid="link-nav-recipes-pantry">Find Recipes</a>
+    <a href="/recipes" class="nav-link" data-testid="link-nav-recipes">Browse All</a>
+    <a href="/fast-food" class="nav-link" data-testid="link-nav-fast-food">Fast Food</a>
+    <a href="/meal-planner" class="nav-link" data-testid="link-nav-meal-planner">Planner</a>
+    <a href="/history" class="nav-link" data-testid="link-nav-history">History</a>
+    <a href="/family" class="nav-link" data-testid="link-nav-family">Family</a>
+  </div>
+  <a href="/profile.html" class="nav-profile" data-testid="link-nav-profile">Profile</a>
+</nav>
+
+<div class="page-title">
+  <h1 data-testid="text-page-title">Family Dinner</h1>
+  <p>Roll the dinner rolls. End the debate.</p>
+</div>
+
+<section class="controls">
+  <label>
+    Tonight's vibe:
+    <select id="style" data-testid="select-meal-style">
+      <option value="any">Anything</option>
+      <option value="kids">Kids Night</option>
+      <option value="family">Comfort Classics</option>
+      <option value="cheap">Cheap & Easy</option>
+      <option value="healthy">Healthy-ish</option>
+    </select>
+  </label>
+
+  <label>
+    Diet:
+    <select id="diet" data-testid="select-diet">
+      <option value="any">Any Diet</option>
+      <option value="meat">Has Meat</option>
+      <option value="vegetarian">Vegetarian</option>
+      <option value="vegan">Vegan</option>
+      <option value="seafood">Seafood</option>
+    </select>
+  </label>
+
+  <label>
+    Avoid:
+    <select id="allergy" data-testid="select-allergy">
+      <option value="none">No Allergies</option>
+      <option value="gluten">Gluten-Free</option>
+      <option value="dairy">Dairy-Free</option>
+      <option value="eggs">Egg-Free</option>
+      <option value="nuts">Nut-Free</option>
+      <option value="soy">Soy-Free</option>
+      <option value="fish">Fish-Free</option>
+      <option value="sesame">Sesame-Free</option>
+    </select>
+  </label>
+
+  <label>
+    Family size:
+    <input type="range" min="2" max="8" value="4" id="size" data-testid="slider-family-size">
+  </label>
+</section>
+
+<div class="wheel-container">
+  <div id="cook-wheel-container"></div>
+</div>
+
+<div id="confetti-container" class="confetti-container"></div>
+
+<section id="result" class="hidden">
+  <h2 id="meal" data-testid="text-meal-name"></h2>
+  <p id="result-message">This is an easy win for tonight.</p>
+
+  <div class="actions">
+    <button id="cook-it-btn" data-testid="button-cook-it">Cook It</button>
+    <button id="order-it-btn" data-testid="button-order-it">Order It</button>
+    <button onclick="spin()" data-testid="button-spin-again">Roll Again</button>
+  </div>
+  
+  <div id="pantry-links" class="pantry-links hidden">
+    <p class="pantry-hint">Not sure what you have?</p>
+    <div class="pantry-buttons">
+      <a href="/my-pantry" class="pantry-link" data-testid="link-scanner">Scan Ingredients</a>
+    </div>
+  </div>
+</section>
+
+<!-- Cook It Modal -->
+<div id="cook-modal" class="modal hidden">
+  <div class="modal-content cook-modal-content">
+    <button class="modal-close" id="close-cook-modal">&times;</button>
+    <h3 id="cook-modal-title">Recipe</h3>
+    <p id="cook-modal-desc" class="recipe-desc"></p>
+    
+    <div class="recipe-meta">
+      <span id="cook-time"></span>
+      <span id="cook-servings"></span>
+    </div>
+    
+    <!-- Missing Ingredients Section -->
+    <div id="missing-section" class="missing-section hidden">
+      <h4>Missing Ingredients</h4>
+      <ul id="missing-list" class="missing-list"></ul>
+      
+      <div class="grocery-buttons">
+        <p class="grocery-hint">Get missing items from:</p>
+        <a id="heb-link" href="#" target="_blank" class="grocery-btn heb" data-testid="link-heb">
+          <span class="store-name">H-E-B</span>
+        </a>
+        <a id="kroger-link" href="#" target="_blank" class="grocery-btn kroger" data-testid="link-kroger">
+          <span class="store-name">Kroger</span>
+        </a>
+        <a id="favor-link" href="#" target="_blank" class="grocery-btn favor" data-testid="link-favor">
+          <span class="store-name">Favor</span>
+        </a>
+      </div>
+    </div>
+    
+    <!-- You Have Everything Section -->
+    <div id="have-all-section" class="have-all-section hidden">
+      <p class="have-all-msg">You have all the ingredients! Let's cook!</p>
+    </div>
+    
+    <h4>Ingredients</h4>
+    <ul id="cook-ingredients" class="ingredient-list"></ul>
+    
+    <h4>Instructions</h4>
+    <ol id="cook-instructions" class="instruction-list"></ol>
+    
+    <div class="modal-actions">
+      <button id="start-cooking-btn" class="start-cooking-btn" data-testid="button-start-cooking">Let's Cook!</button>
+    </div>
+  </div>
+</div>
+
+<!-- Order It Modal -->
+<div id="order-modal" class="modal hidden">
+  <div class="modal-content order-modal-content">
+    <button class="modal-close" id="close-order-modal">&times;</button>
+    <h3 id="order-modal-title">Order <span id="order-meal-name"></span></h3>
+    <p class="order-desc">Find the closest place to get this meal:</p>
+    
+    <div class="delivery-grid">
+      <a id="uber-order-link" href="#" target="_blank" class="delivery-btn-large ubereats" data-testid="link-order-ubereats">
+        <span class="delivery-name">Uber Eats</span>
+        <span class="delivery-sub">Search nearby</span>
+      </a>
+      <a id="doordash-order-link" href="#" target="_blank" class="delivery-btn-large doordash" data-testid="link-order-doordash">
+        <span class="delivery-name">DoorDash</span>
+        <span class="delivery-sub">Search nearby</span>
+      </a>
+      <a id="grubhub-order-link" href="#" target="_blank" class="delivery-btn-large grubhub" data-testid="link-order-grubhub">
+        <span class="delivery-name">Grubhub</span>
+        <span class="delivery-sub">Search nearby</span>
+      </a>
+      <a id="google-order-link" href="#" target="_blank" class="delivery-btn-large google" data-testid="link-order-google">
+        <span class="delivery-name">Google Maps</span>
+        <span class="delivery-sub">Find nearest</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<footer class="home-footer">
+  <div class="footer-content">
+    <span class="footer-logo"><img src="/icons/icon-192.png" alt=""/>DinnerRoll</span>
+    <div class="footer-legal" data-testid="footer-legal-links">
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-legal">Terms & Privacy</a>
+      <span class="footer-legal-sep">|</span>
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-allergy">Allergy Disclaimer</a>
+    </div>
+    <p class="footer-copyright">Not a medical or dietary advisory service. Use at your own risk.</p>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar" data-testid="nav-bottom-tabs">
+  <div class="tab-items">
+    <a href="/" class="tab-item" data-testid="tab-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/family.html" class="tab-item active" data-testid="tab-cook">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/><path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/></svg>
+      Cook
+    </a>
+    <a href="/order.html" class="tab-item" data-testid="tab-order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      Order
+    </a>
+    <a href="/my-pantry" class="tab-item" data-testid="tab-pantry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><path d="m15 7-3 3-3-3"/></svg>
+      Pantry
+    </a>
+    <a href="/profile.html" class="tab-item" data-testid="tab-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </div>
+</nav>
+
+<script src="spin-wheel.js"></script>
+<script src="script.js"></script>
+<script>
+  (function() {
+    var pantry = [];
+    try { pantry = JSON.parse(localStorage.getItem("dinnerroll_my_pantry") || "[]"); } catch(e) {}
+
+    if (pantry.length === 0) {
+      var wheelContainer = document.querySelector('.wheel-container');
+      var controls = document.querySelector('.controls');
+      var result = document.getElementById('result');
+      if (wheelContainer) wheelContainer.style.display = 'none';
+      if (controls) controls.style.display = 'none';
+      if (result) result.style.display = 'none';
+
+      var gate = document.createElement('div');
+      gate.style.cssText = 'max-width:500px;margin:2rem auto;padding:2rem;text-align:center;background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.25);border-radius:16px;';
+      gate.innerHTML =
+        '<h2 style="color:#f0b429;font-size:1.5rem;font-weight:800;margin:0 0 0.5rem;">Stock Your Pantry to Cook</h2>' +
+        '<p style="color:rgba(255,255,255,0.65);margin:0 0 1.5rem;line-height:1.5;">Add ingredients to your pantry first, and we\'ll spin up recipes you can actually make with what you have.</p>' +
+        '<div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">' +
+          '<a href="/my-pantry" style="background:#f0b429;color:#2d1810;padding:0.75rem 1.5rem;border-radius:8px;font-weight:700;font-size:1rem;text-decoration:none;" data-testid="button-go-pantry">Stock My Pantry</a>' +
+          '<a href="/purchase" style="background:transparent;color:#f0b429;border:1px solid rgba(240,180,41,0.4);padding:0.75rem 1.5rem;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;" data-testid="link-view-pricing">View Pricing</a>' +
+        '</div>' +
+        '<p style="color:rgba(255,255,255,0.35);font-size:0.75rem;margin-top:1rem;">$4.99/mo or $29.99 lifetime</p>';
+
+      var pageTitle = document.querySelector('.page-title');
+      if (pageTitle) pageTitle.after(gate);
+    } else {
+      initCookWheel();
+
+      ['style', 'diet', 'allergy'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('change', function() { updateWheelForFilters(); });
+      });
+    }
+  })();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/sw.js')
+        .then(function(reg) { console.log('SW registered'); })
+        .catch(function(err) { console.log('SW registration failed:', err); });
+    });
+  }
+</script>
+</body>
+</html>

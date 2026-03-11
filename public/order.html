@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#8B4513"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="DinnerRoll"/>
+  <title>Order Out - DinnerRoll</title>
+  <meta name="description" content="Spin the wheel and find where to order dinner tonight. 90+ restaurants, delivery links, and local spots."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Order Out - DinnerRoll"/>
+  <meta property="og:description" content="Spin the wheel and find where to order dinner tonight."/>
+  <meta property="og:image" content="/images/og-preview.png"/>
+  <meta property="og:site_name" content="DinnerRoll"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Order Out - DinnerRoll"/>
+  <meta name="twitter:description" content="Spin the wheel and find where to order dinner tonight."/>
+  <meta name="twitter:image" content="/images/og-preview.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+</head>
+<body class="order-page">
+
+<nav class="app-nav">
+  <a href="/" class="nav-logo" data-testid="link-nav-home"><img src="/icons/icon-192.png" alt="DinnerRoll icon"/>DinnerRoll</a>
+  <div class="nav-links">
+    <a href="/" class="nav-link" data-testid="link-nav-home-page">Home</a>
+    <a href="/family.html" class="nav-link" data-testid="link-nav-cook">Cook</a>
+    <a href="/order.html" class="nav-link active" data-testid="link-nav-order">Order</a>
+    <a href="/my-pantry" class="nav-link" data-testid="link-nav-pantry">My Pantry</a>
+    <a href="/pantry" class="nav-link" data-testid="link-nav-recipes-pantry">Find Recipes</a>
+    <a href="/recipes" class="nav-link" data-testid="link-nav-recipes">Browse All</a>
+    <a href="/fast-food" class="nav-link" data-testid="link-nav-fast-food">Fast Food</a>
+    <a href="/meal-planner" class="nav-link" data-testid="link-nav-meal-planner">Planner</a>
+    <a href="/history" class="nav-link" data-testid="link-nav-history">History</a>
+    <a href="/family" class="nav-link" data-testid="link-nav-family">Family</a>
+  </div>
+  <a href="/profile.html" class="nav-profile" data-testid="link-nav-profile">Profile</a>
+</nav>
+
+<div class="page-title">
+  <h1 data-testid="text-page-title">Order Out</h1>
+  <p>Find something good nearby.</p>
+</div>
+
+<section class="controls">
+  <label>
+    Craving:
+    <select id="cuisine" data-testid="select-cuisine">
+      <option value="popular" selected>Top Delivery Picks</option>
+      <optgroup label="By Cuisine">
+        <option value="burger">Burgers</option>
+        <option value="chicken">Chicken</option>
+        <option value="mexican">Mexican</option>
+        <option value="pizza">Pizza</option>
+        <option value="asian">Asian</option>
+        <option value="italian">Italian</option>
+        <option value="seafood">Seafood</option>
+        <option value="subs">Subs & Sandwiches</option>
+        <option value="american">American / Casual Dining</option>
+        <option value="steak">Steakhouses</option>
+        <option value="fast">Fast Food</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="healthy">Healthy</option>
+      </optgroup>
+      <optgroup label="More Options">
+        <option value="any">Mix It All Up</option>
+        <option value="travel">I'm Traveling</option>
+      </optgroup>
+      <optgroup label="Your Picks">
+        <option value="favorites">My Favorites (0)</option>
+        <option value="custom">My Added Restaurants</option>
+      </optgroup>
+    </select>
+  </label>
+  
+  <button id="add-restaurant-btn" class="add-btn" data-testid="button-add-restaurant">+ Add Restaurant</button>
+</section>
+
+<div class="wheel-container">
+  <div id="order-wheel-container"></div>
+</div>
+
+<div id="confetti-container" class="confetti-container"></div>
+
+<section id="result" class="hidden">
+  <h2 id="meal" data-testid="text-restaurant-name"></h2>
+  <p id="result-message">Great choice for tonight!</p>
+  
+  <button id="favorite-btn" class="favorite-btn" data-testid="button-favorite">Add to Favorites</button>
+
+  <div class="delivery-buttons">
+    <a id="ubereats-link" href="#" target="_blank" class="delivery-btn ubereats" data-testid="link-ubereats">
+      Uber Eats
+    </a>
+    <a id="doordash-link" href="#" target="_blank" class="delivery-btn doordash" data-testid="link-doordash">
+      DoorDash
+    </a>
+    <a id="grubhub-link" href="#" target="_blank" class="delivery-btn grubhub" data-testid="link-grubhub">
+      Grubhub
+    </a>
+    <a id="maps-link" href="#" target="_blank" class="delivery-btn maps" data-testid="link-maps">
+      Find Nearby
+    </a>
+  </div>
+
+  <button onclick="spinOrder()" class="spin-again" data-testid="button-spin-again">Roll Again</button>
+</section>
+
+<section id="my-restaurants" class="my-restaurants">
+  <h3>My Added Restaurants</h3>
+  <div id="custom-list" class="custom-list"></div>
+</section>
+
+<!-- Add Restaurant Modal -->
+<div id="add-restaurant-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Add Your Restaurant</h3>
+    <p>Add a local spot you love!</p>
+    <input type="text" id="custom-name" placeholder="Restaurant name..." data-testid="input-restaurant-name" />
+    <div class="modal-buttons">
+      <button id="cancel-add" class="cancel-btn">Cancel</button>
+      <button id="confirm-add" class="confirm-btn" data-testid="button-confirm-add">Add</button>
+    </div>
+  </div>
+</div>
+
+<footer class="home-footer">
+  <div class="footer-content">
+    <span class="footer-logo"><img src="/icons/icon-192.png" alt=""/>DinnerRoll</span>
+    <div class="footer-legal" data-testid="footer-legal-links">
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-legal">Terms & Privacy</a>
+      <span class="footer-legal-sep">|</span>
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-allergy">Allergy Disclaimer</a>
+    </div>
+    <p class="footer-copyright">Not a medical or dietary advisory service. Use at your own risk.</p>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar" data-testid="nav-bottom-tabs">
+  <div class="tab-items">
+    <a href="/" class="tab-item" data-testid="tab-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/family.html" class="tab-item" data-testid="tab-cook">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/><path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/></svg>
+      Cook
+    </a>
+    <a href="/order.html" class="tab-item active" data-testid="tab-order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      Order
+    </a>
+    <a href="/my-pantry" class="tab-item" data-testid="tab-pantry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><path d="m15 7-3 3-3-3"/></svg>
+      Pantry
+    </a>
+    <a href="/profile.html" class="tab-item" data-testid="tab-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </div>
+</nav>
+
+<script src="spin-wheel.js"></script>
+<script src="order-script.js"></script>
+<script>
+  initOrderWheel();
+  
+  document.getElementById("cuisine").addEventListener("change", function() {
+    refreshOrderWheel();
+  });
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.log('SW registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>

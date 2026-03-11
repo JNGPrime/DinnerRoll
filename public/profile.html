@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#8B4513"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="DinnerRoll"/>
+  <title>My Account - DinnerRoll</title>
+  <meta name="description" content="Manage your DinnerRoll account, preferences, and subscription."/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="My Account - DinnerRoll"/>
+  <meta property="og:description" content="Manage your DinnerRoll account and preferences."/>
+  <meta property="og:image" content="/images/og-preview.png"/>
+  <meta property="og:site_name" content="DinnerRoll"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="My Account - DinnerRoll"/>
+  <meta name="twitter:description" content="Manage your DinnerRoll account and preferences."/>
+  <meta name="twitter:image" content="/images/og-preview.png"/>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="manifest" href="/manifest.json"/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+  <style>
+    .account-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Welcome Screen (Logged Out) */
+    .welcome-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #CD853F 100%);
+    }
+    
+    .welcome-logo {
+      font-size: 4rem;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .welcome-logo img {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+    }
+    
+    .welcome-tagline {
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2rem;
+    }
+    
+    .welcome-features {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 320px;
+    }
+    
+    .welcome-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255,255,255,0.15);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+    
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    
+    .get-started-btn {
+      background: #fff;
+      color: #8B4513;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .get-started-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    
+    .welcome-footer {
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+    }
+    
+    /* Onboarding Wizard */
+    .onboarding-screen {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      background: linear-gradient(180deg, #3d2512 0%, #2a1a0e 100%);
+      padding: 1.5rem;
+    }
+    
+    .onboarding-screen.active {
+      display: flex;
+    }
+    
+    .onboarding-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .onboarding-header h2 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .onboarding-header p {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.95rem;
+    }
+    
+    .progress-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      transition: background 0.3s;
+    }
+    
+    .progress-dot.active {
+      background: #CD853F;
+    }
+    
+    .progress-dot.completed {
+      background: #4CAF50;
+    }
+    
+    .onboarding-content {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .step-title {
+      color: #CD853F;
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    /* Family Size Picker */
+    .family-picker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+    
+    .family-option {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .family-option:hover {
+      border-color: #CD853F;
+      background: rgba(205,133,63,0.2);
+    }
+    
+    .family-option.selected {
+      border-color: #CD853F;
+      background: #CD853F;
+      color: #fff;
+    }
+    
+    /* Diet Options */
+    .diet-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .diet-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: #fff;
+    }
+    
+    .diet-option:hover {
+      border-color: #CD853F;
+      background: rgba(205,133,63,0.1);
+    }
+    
+    .diet-option.selected {
+      border-color: #CD853F;
+      background: rgba(205,133,63,0.2);
+    }
+    
+    .diet-option input {
+      display: none;
+    }
+    
+    .diet-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    .diet-label {
+      flex: 1;
+    }
+    
+    .diet-label strong {
+      display: block;
+      font-size: 1rem;
+    }
+    
+    .diet-label span {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.6);
+    }
+    
+    /* Allergy Chips */
+    .allergy-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .allergy-chip {
+      padding: 0.6rem 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+    
+    .allergy-chip:hover {
+      border-color: #CD853F;
+    }
+    
+    .allergy-chip.selected {
+      background: #CD853F;
+      border-color: #CD853F;
+    }
+    
+    .allergy-chip input {
+      display: none;
+    }
+    
+    /* Cuisine Grid */
+    .cuisine-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    
+    .cuisine-option {
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 2px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      color: #fff;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .cuisine-option:hover {
+      border-color: #CD853F;
+    }
+    
+    .cuisine-option.selected {
+      border-color: #CD853F;
+      background: rgba(205,133,63,0.2);
+    }
+    
+    .cuisine-option input {
+      display: none;
+    }
+    
+    /* Navigation Buttons */
+    .onboarding-nav {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .nav-btn {
+      flex: 1;
+      padding: 1rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .nav-btn.back {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+    }
+    
+    .nav-btn.next {
+      background: #CD853F;
+      border: none;
+      color: #fff;
+    }
+    
+    .nav-btn.next:hover {
+      background: #B8732C;
+    }
+    
+    .nav-btn.skip {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+    }
+    
+    /* Profile Dashboard (Logged In) */
+    .profile-dashboard {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #3d2512 0%, #2a1a0e 100%);
+    }
+    
+    .profile-dashboard.active {
+      display: flex;
+    }
+    
+    .profile-header {
+      background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    
+    .profile-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid #fff;
+      margin-bottom: 0.75rem;
+      object-fit: cover;
+    }
+    
+    .profile-name {
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+    
+    .profile-email {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    
+    .profile-content {
+      flex: 1;
+      padding: 1.5rem;
+    }
+    
+    .profile-section {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    
+    .profile-section h3 {
+      color: #CD853F;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .pref-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .pref-row:last-child {
+      border-bottom: none;
+    }
+    
+    .pref-label {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.9rem;
+    }
+    
+    .pref-value {
+      font-weight: 500;
+    }
+    
+    .edit-prefs-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: rgba(205,133,63,0.2);
+      border: 1px solid #CD853F;
+      border-radius: 10px;
+      color: #CD853F;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 0.75rem;
+    }
+    
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .history-meal {
+      font-weight: 500;
+    }
+    
+    .history-date {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+    }
+    
+    .signout-btn {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    
+    .back-home-link {
+      display: block;
+      text-align: center;
+      padding: 1rem;
+      color: #CD853F;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="profile-page">
+
+<nav class="app-nav">
+  <a href="/" class="nav-logo" data-testid="link-nav-home"><img src="/icons/icon-192.png" alt="DinnerRoll icon"/>DinnerRoll</a>
+  <div class="nav-links">
+    <a href="/" class="nav-link" data-testid="link-nav-home-page">Home</a>
+    <a href="/family.html" class="nav-link" data-testid="link-nav-cook">Cook</a>
+    <a href="/order.html" class="nav-link" data-testid="link-nav-order">Order</a>
+    <a href="/my-pantry" class="nav-link" data-testid="link-nav-pantry">My Pantry</a>
+    <a href="/pantry" class="nav-link" data-testid="link-nav-recipes-pantry">Find Recipes</a>
+    <a href="/recipes" class="nav-link" data-testid="link-nav-recipes">Browse All</a>
+    <a href="/fast-food" class="nav-link" data-testid="link-nav-fast-food">Fast Food</a>
+  </div>
+  <a href="/profile.html" class="nav-profile active" data-testid="link-nav-profile">Profile</a>
+</nav>
+
+  <div class="account-container">
+    
+    <!-- Welcome Screen (Logged Out) -->
+    <div id="welcome-screen" class="welcome-screen">
+      <div class="welcome-logo"><img src="/icons/icon-192.png" alt=""/>DinnerRoll</div>
+      <p class="welcome-tagline">Your personal dinner assistant</p>
+      
+      <div class="welcome-features">
+        <div class="welcome-feature">
+          <div class="feature-icon">S</div>
+          <span>Save your family's preferences</span>
+        </div>
+        <div class="welcome-feature">
+          <div class="feature-icon">T</div>
+          <span>Track your dinner history</span>
+        </div>
+        <div class="welcome-feature">
+          <div class="feature-icon">F</div>
+          <span>Filter by allergies and diet</span>
+        </div>
+      </div>
+      
+      <button id="get-started-btn" class="get-started-btn" data-testid="button-get-started">
+        Start Spinning
+      </button>
+      
+      <a href="/purchase" class="get-started-btn" style="display:inline-block;text-decoration:none;margin-top:0.75rem;background:rgba(255,255,255,0.15);color:#fff;border:2px solid rgba(255,255,255,0.4);" data-testid="button-subscribe-cta">
+        Subscribe
+      </a>
+    </div>
+    
+    <!-- Onboarding Step 1: Family Size -->
+    <div id="onboarding-step-1" class="onboarding-screen">
+      <div class="onboarding-header">
+        <h2>Welcome to DinnerRoll</h2>
+        <p>Let's personalize your experience</p>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot active" data-step="1"></div>
+        <div class="progress-dot" data-step="2"></div>
+        <div class="progress-dot" data-step="3"></div>
+        <div class="progress-dot" data-step="4"></div>
+        <div class="progress-dot" data-step="5"></div>
+      </div>
+      
+      <div class="onboarding-content">
+        <div class="step-title">How many people are you cooking for?</div>
+        <div class="family-picker">
+          <button class="family-option" data-value="1" data-testid="btn-family-1">1</button>
+          <button class="family-option" data-value="2" data-testid="btn-family-2">2</button>
+          <button class="family-option" data-value="3" data-testid="btn-family-3">3</button>
+          <button class="family-option" data-value="4" data-testid="btn-family-4">4</button>
+          <button class="family-option selected" data-value="5" data-testid="btn-family-5">5</button>
+          <button class="family-option" data-value="6" data-testid="btn-family-6">6</button>
+          <button class="family-option" data-value="7" data-testid="btn-family-7">7+</button>
+        </div>
+      </div>
+      
+      <div class="onboarding-nav">
+        <button class="nav-btn next" id="step1-next" data-testid="btn-step1-next">Continue</button>
+      </div>
+    </div>
+    
+    <!-- Onboarding Step 2: Dietary Preference -->
+    <div id="onboarding-step-2" class="onboarding-screen">
+      <div class="onboarding-header">
+        <h2>Dietary Preference</h2>
+        <p>What's your eating style?</p>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot completed" data-step="1"></div>
+        <div class="progress-dot active" data-step="2"></div>
+        <div class="progress-dot" data-step="3"></div>
+        <div class="progress-dot" data-step="4"></div>
+        <div class="progress-dot" data-step="5"></div>
+      </div>
+      
+      <div class="onboarding-content">
+        <div class="diet-options">
+          <label class="diet-option selected" data-testid="diet-any">
+            <input type="radio" name="diet" value="" checked/>
+            <div class="diet-icon">A</div>
+            <div class="diet-label">
+              <strong>Anything Goes</strong>
+              <span>No restrictions</span>
+            </div>
+          </label>
+          <label class="diet-option" data-testid="diet-meat">
+            <input type="radio" name="diet" value="meat"/>
+            <div class="diet-icon">M</div>
+            <div class="diet-label">
+              <strong>Meat Lover</strong>
+              <span>Bring on the protein</span>
+            </div>
+          </label>
+          <label class="diet-option" data-testid="diet-vegetarian">
+            <input type="radio" name="diet" value="vegetarian"/>
+            <div class="diet-icon">V</div>
+            <div class="diet-label">
+              <strong>Vegetarian</strong>
+              <span>No meat, but eggs and dairy OK</span>
+            </div>
+          </label>
+          <label class="diet-option" data-testid="diet-vegan">
+            <input type="radio" name="diet" value="vegan"/>
+            <div class="diet-icon">P</div>
+            <div class="diet-label">
+              <strong>Vegan</strong>
+              <span>Plant-based only</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="onboarding-nav">
+        <button class="nav-btn back" id="step2-back">Back</button>
+        <button class="nav-btn next" id="step2-next" data-testid="btn-step2-next">Continue</button>
+      </div>
+    </div>
+    
+    <!-- Onboarding Step 3: Allergies -->
+    <div id="onboarding-step-3" class="onboarding-screen">
+      <div class="onboarding-header">
+        <h2>Any Allergies?</h2>
+        <p>Select all that apply (optional)</p>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot completed" data-step="1"></div>
+        <div class="progress-dot completed" data-step="2"></div>
+        <div class="progress-dot active" data-step="3"></div>
+        <div class="progress-dot" data-step="4"></div>
+        <div class="progress-dot" data-step="5"></div>
+      </div>
+      
+      <div class="onboarding-content">
+        <div class="allergy-chips">
+          <label class="allergy-chip" data-testid="allergy-gluten">
+            <input type="checkbox" value="gluten"/>Gluten
+          </label>
+          <label class="allergy-chip" data-testid="allergy-dairy">
+            <input type="checkbox" value="dairy"/>Dairy
+          </label>
+          <label class="allergy-chip" data-testid="allergy-eggs">
+            <input type="checkbox" value="eggs"/>Eggs
+          </label>
+          <label class="allergy-chip" data-testid="allergy-nuts">
+            <input type="checkbox" value="nuts"/>Nuts
+          </label>
+          <label class="allergy-chip" data-testid="allergy-soy">
+            <input type="checkbox" value="soy"/>Soy
+          </label>
+          <label class="allergy-chip" data-testid="allergy-fish">
+            <input type="checkbox" value="fish"/>Fish/Seafood
+          </label>
+          <label class="allergy-chip" data-testid="allergy-sesame">
+            <input type="checkbox" value="sesame"/>Sesame
+          </label>
+        </div>
+      </div>
+      
+      <div class="onboarding-nav">
+        <button class="nav-btn back" id="step3-back">Back</button>
+        <button class="nav-btn next" id="step3-next" data-testid="btn-step3-next">Continue</button>
+      </div>
+    </div>
+    
+    <!-- Onboarding Step 4: Favorite Cuisines -->
+    <div id="onboarding-step-4" class="onboarding-screen">
+      <div class="onboarding-header">
+        <h2>Favorite Cuisines</h2>
+        <p>Pick a few you love (optional)</p>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot completed" data-step="1"></div>
+        <div class="progress-dot completed" data-step="2"></div>
+        <div class="progress-dot completed" data-step="3"></div>
+        <div class="progress-dot active" data-step="4"></div>
+        <div class="progress-dot" data-step="5"></div>
+      </div>
+      
+      <div class="onboarding-content">
+        <div class="cuisine-grid">
+          <label class="cuisine-option" data-testid="cuisine-american">
+            <input type="checkbox" value="american"/>American
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-italian">
+            <input type="checkbox" value="italian"/>Italian
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-mexican">
+            <input type="checkbox" value="mexican"/>Mexican
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-chinese">
+            <input type="checkbox" value="chinese"/>Chinese
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-indian">
+            <input type="checkbox" value="indian"/>Indian
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-thai">
+            <input type="checkbox" value="thai"/>Thai
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-japanese">
+            <input type="checkbox" value="japanese"/>Japanese
+          </label>
+          <label class="cuisine-option" data-testid="cuisine-mediterranean">
+            <input type="checkbox" value="mediterranean"/>Mediterranean
+          </label>
+        </div>
+      </div>
+      
+      <div class="onboarding-nav">
+        <button class="nav-btn back" id="step4-back">Back</button>
+        <button class="nav-btn next" id="step4-next" data-testid="btn-step4-next">Continue</button>
+      </div>
+    </div>
+    
+    <!-- Onboarding Step 5: Budget -->
+    <div id="onboarding-step-5" class="onboarding-screen">
+      <div class="onboarding-header">
+        <h2>Budget Level</h2>
+        <p>What's your typical dinner budget?</p>
+      </div>
+      
+      <div class="progress-dots">
+        <div class="progress-dot completed" data-step="1"></div>
+        <div class="progress-dot completed" data-step="2"></div>
+        <div class="progress-dot completed" data-step="3"></div>
+        <div class="progress-dot completed" data-step="4"></div>
+        <div class="progress-dot active" data-step="5"></div>
+      </div>
+      
+      <div class="onboarding-content">
+        <div class="diet-options">
+          <label class="diet-option" data-testid="budget-low">
+            <input type="radio" name="budget" value="low"/>
+            <div class="diet-icon">$</div>
+            <div class="diet-label">
+              <strong>Budget-Friendly</strong>
+              <span>Keep it affordable</span>
+            </div>
+          </label>
+          <label class="diet-option selected" data-testid="budget-medium">
+            <input type="radio" name="budget" value="medium" checked/>
+            <div class="diet-icon">$$</div>
+            <div class="diet-label">
+              <strong>Medium</strong>
+              <span>Balance of cost and quality</span>
+            </div>
+          </label>
+          <label class="diet-option" data-testid="budget-high">
+            <input type="radio" name="budget" value="high"/>
+            <div class="diet-icon">$$$</div>
+            <div class="diet-label">
+              <strong>Premium</strong>
+              <span>Quality ingredients, no limits</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="onboarding-nav">
+        <button class="nav-btn back" id="step5-back">Back</button>
+        <button class="nav-btn next" id="step5-finish" data-testid="btn-finish-setup">Finish Setup</button>
+      </div>
+    </div>
+    
+    <!-- Profile Dashboard (Logged In) -->
+    <div id="profile-dashboard" class="profile-dashboard">
+      <div class="profile-header">
+        <img id="profile-avatar" class="profile-avatar" src="" alt="Profile"/>
+        <div id="profile-name" class="profile-name" data-testid="text-profile-name"></div>
+        <div id="profile-email" class="profile-email" data-testid="text-profile-email"></div>
+      </div>
+      
+      <div class="profile-content">
+        <div class="profile-section">
+          <h3>My Preferences</h3>
+          <div class="pref-row">
+            <span class="pref-label">Family Size</span>
+            <span class="pref-value" id="pref-display-family" data-testid="text-pref-family">4 people</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Diet</span>
+            <span class="pref-value" id="pref-display-diet" data-testid="text-pref-diet">No preference</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Allergies</span>
+            <span class="pref-value" id="pref-display-allergies" data-testid="text-pref-allergies">None</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Favorite Cuisines</span>
+            <span class="pref-value" id="pref-display-cuisines" data-testid="text-pref-cuisines">All</span>
+          </div>
+          <div class="pref-row">
+            <span class="pref-label">Budget</span>
+            <span class="pref-value" id="pref-display-budget" data-testid="text-pref-budget">Medium</span>
+          </div>
+          <button id="edit-prefs-btn" class="edit-prefs-btn" data-testid="button-edit-prefs">Edit Preferences</button>
+        </div>
+        
+        <div class="profile-section">
+          <h3>Recent Dinners</h3>
+          <div id="history-list" data-testid="list-history">
+            <p style="color: rgba(255,255,255,0.5); text-align: center;">No dinner history yet. Start spinning!</p>
+          </div>
+        </div>
+        
+        <button id="signout-btn" class="signout-btn" data-testid="button-signout">Sign Out</button>
+      </div>
+    </div>
+    
+  </div>
+
+<script>
+  // State
+  let currentUser = null;
+  let userPrefs = {
+    familySize: 4,
+    diet: '',
+    allergies: [],
+    cuisines: [],
+    budget: 'medium'
+  };
+  
+  // Check auth state on load
+  async function checkAuth() {
+    try {
+      const response = await fetch('/api/auth/user');
+      if (response.ok) {
+        currentUser = await response.json();
+        // Check if user has preferences set
+        const prefsResponse = await fetch('/api/user/preferences');
+        if (prefsResponse.ok) {
+          const prefs = await prefsResponse.json();
+          if (prefs && prefs.familySize) {
+            // User has preferences, show dashboard
+            userPrefs = {
+              familySize: prefs.familySize || 4,
+              diet: (prefs.dietaryRestrictions && prefs.dietaryRestrictions[0]) || '',
+              allergies: prefs.allergies || [],
+              cuisines: prefs.favoriteCuisines || [],
+              budget: prefs.budgetLevel || 'medium'
+            };
+            showDashboard();
+          } else {
+            // New user, show onboarding
+            showOnboarding();
+          }
+        } else {
+          showOnboarding();
+        }
+      } else {
+        showWelcome();
+      }
+    } catch (error) {
+      showWelcome();
+    }
+  }
+  
+  function showWelcome() {
+    document.getElementById('welcome-screen').style.display = 'flex';
+    document.getElementById('profile-dashboard').classList.remove('active');
+    hideAllOnboarding();
+  }
+  
+  function showOnboarding() {
+    document.getElementById('welcome-screen').style.display = 'none';
+    document.getElementById('profile-dashboard').classList.remove('active');
+    showStep(1);
+  }
+  
+  function showDashboard() {
+    document.getElementById('welcome-screen').style.display = 'none';
+    hideAllOnboarding();
+    document.getElementById('profile-dashboard').classList.add('active');
+    
+    // Populate user info
+    document.getElementById('profile-name').textContent = currentUser.firstName || 'User';
+    document.getElementById('profile-email').textContent = currentUser.email || '';
+    if (currentUser.profileImageUrl) {
+      document.getElementById('profile-avatar').src = currentUser.profileImageUrl;
+    } else {
+      document.getElementById('profile-avatar').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="50" fill="%23CD853F"/><text x="50" y="60" text-anchor="middle" fill="white" font-size="40" font-family="Arial">' + (currentUser.firstName ? currentUser.firstName[0].toUpperCase() : 'U') + '</text></svg>';
+    }
+    
+    // Display preferences
+    document.getElementById('pref-display-family').textContent = userPrefs.familySize + ' people';
+    document.getElementById('pref-display-diet').textContent = userPrefs.diet ? capitalize(userPrefs.diet) : 'No preference';
+    document.getElementById('pref-display-allergies').textContent = userPrefs.allergies.length ? userPrefs.allergies.map(capitalize).join(', ') : 'None';
+    document.getElementById('pref-display-cuisines').textContent = userPrefs.cuisines.length ? userPrefs.cuisines.map(capitalize).join(', ') : 'All';
+    document.getElementById('pref-display-budget').textContent = userPrefs.budget === 'low' ? 'Budget-Friendly' : userPrefs.budget === 'high' ? 'Premium' : 'Medium';
+    
+    loadHistory();
+  }
+  
+  function hideAllOnboarding() {
+    for (let i = 1; i <= 5; i++) {
+      document.getElementById('onboarding-step-' + i).classList.remove('active');
+    }
+  }
+  
+  function showStep(step) {
+    hideAllOnboarding();
+    document.getElementById('onboarding-step-' + step).classList.add('active');
+  }
+  
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+  
+  // Get Started button
+  document.getElementById('get-started-btn').addEventListener('click', () => {
+    window.location.href = '/api/login';
+  });
+  
+  // Family size selection
+  document.querySelectorAll('.family-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.family-option').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userPrefs.familySize = parseInt(btn.dataset.value) || 7;
+    });
+  });
+  
+  // Diet option selection (only in step 2)
+  document.querySelectorAll('#onboarding-step-2 .diet-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('#onboarding-step-2 .diet-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+      option.querySelector('input').checked = true;
+      userPrefs.diet = option.querySelector('input').value;
+    });
+  });
+  
+  // Allergy chip toggle
+  document.querySelectorAll('.allergy-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+      const checkbox = chip.querySelector('input');
+      checkbox.checked = !checkbox.checked;
+      updateAllergies();
+    });
+  });
+  
+  function updateAllergies() {
+    userPrefs.allergies = [];
+    document.querySelectorAll('.allergy-chip input:checked').forEach(cb => {
+      userPrefs.allergies.push(cb.value);
+    });
+  }
+  
+  // Cuisine option toggle
+  document.querySelectorAll('.cuisine-option').forEach(option => {
+    option.addEventListener('click', () => {
+      option.classList.toggle('selected');
+      const checkbox = option.querySelector('input');
+      checkbox.checked = !checkbox.checked;
+      updateCuisines();
+    });
+  });
+  
+  function updateCuisines() {
+    userPrefs.cuisines = [];
+    document.querySelectorAll('.cuisine-option input:checked').forEach(cb => {
+      userPrefs.cuisines.push(cb.value);
+    });
+  }
+  
+  // Navigation buttons
+  document.getElementById('step1-next').addEventListener('click', () => showStep(2));
+  document.getElementById('step2-back').addEventListener('click', () => showStep(1));
+  document.getElementById('step2-next').addEventListener('click', () => showStep(3));
+  document.getElementById('step3-back').addEventListener('click', () => showStep(2));
+  document.getElementById('step3-next').addEventListener('click', () => showStep(4));
+  document.getElementById('step4-back').addEventListener('click', () => showStep(3));
+  document.getElementById('step4-next').addEventListener('click', () => showStep(5));
+  document.getElementById('step5-back').addEventListener('click', () => showStep(4));
+  
+  // Budget option selection
+  document.querySelectorAll('#onboarding-step-5 .diet-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('#onboarding-step-5 .diet-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+      option.querySelector('input').checked = true;
+      userPrefs.budget = option.querySelector('input').value;
+    });
+  });
+  
+  // Finish setup
+  document.getElementById('step5-finish').addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/user/preferences', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          familySize: userPrefs.familySize,
+          budgetLevel: userPrefs.budget,
+          dietaryRestrictions: userPrefs.diet ? [userPrefs.diet] : [],
+          allergies: userPrefs.allergies,
+          favoriteCuisines: userPrefs.cuisines
+        })
+      });
+      
+      if (response.ok) {
+        showDashboard();
+      } else {
+        alert('Failed to save preferences. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+      alert('Failed to save preferences. Please try again.');
+    }
+  });
+  
+  // Edit preferences button
+  document.getElementById('edit-prefs-btn').addEventListener('click', () => {
+    // Pre-populate and show onboarding
+    document.querySelectorAll('.family-option').forEach(btn => {
+      btn.classList.remove('selected');
+      if (parseInt(btn.dataset.value) === userPrefs.familySize) {
+        btn.classList.add('selected');
+      }
+    });
+    
+    document.querySelectorAll('#onboarding-step-2 .diet-option').forEach(opt => {
+      opt.classList.remove('selected');
+      const input = opt.querySelector('input');
+      if (input.value === userPrefs.diet) {
+        opt.classList.add('selected');
+        input.checked = true;
+      }
+    });
+    
+    document.querySelectorAll('.allergy-chip').forEach(chip => {
+      const input = chip.querySelector('input');
+      if (userPrefs.allergies.includes(input.value)) {
+        chip.classList.add('selected');
+        input.checked = true;
+      } else {
+        chip.classList.remove('selected');
+        input.checked = false;
+      }
+    });
+    
+    document.querySelectorAll('.cuisine-option').forEach(opt => {
+      const input = opt.querySelector('input');
+      if (userPrefs.cuisines.includes(input.value)) {
+        opt.classList.add('selected');
+        input.checked = true;
+      } else {
+        opt.classList.remove('selected');
+        input.checked = false;
+      }
+    });
+    
+    // Pre-populate budget selection
+    document.querySelectorAll('#onboarding-step-5 .diet-option').forEach(opt => {
+      opt.classList.remove('selected');
+      const input = opt.querySelector('input');
+      if (input.value === userPrefs.budget) {
+        opt.classList.add('selected');
+        input.checked = true;
+      }
+    });
+    
+    showOnboarding();
+  });
+  
+  // Sign out button
+  document.getElementById('signout-btn').addEventListener('click', () => {
+    window.location.href = '/api/logout';
+  });
+  
+  // Load dinner history
+  async function loadHistory() {
+    try {
+      const response = await fetch('/api/user/history');
+      if (response.ok) {
+        const history = await response.json();
+        const historyList = document.getElementById('history-list');
+        
+        if (history.length === 0) {
+          historyList.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center;">No dinner history yet. Start spinning!</p>';
+          return;
+        }
+        
+        historyList.innerHTML = history.slice(0, 5).map(entry => `
+          <div class="history-item">
+            <span class="history-meal">${entry.mealName}</span>
+            <span class="history-date">${new Date(entry.cookedAt).toLocaleDateString()}</span>
+          </div>
+        `).join('');
+      }
+    } catch (error) {
+      console.error('Error loading history:', error);
+    }
+  }
+  
+  // Initialize
+  checkAuth();
+</script>
+
+<footer class="home-footer">
+  <div class="footer-content">
+    <span class="footer-logo"><img src="/icons/icon-192.png" alt=""/>DinnerRoll</span>
+    <div class="footer-legal" data-testid="footer-legal-links">
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-legal">Terms & Privacy</a>
+      <span class="footer-legal-sep">|</span>
+      <a href="/legal" class="footer-legal-link" data-testid="link-footer-allergy">Allergy Disclaimer</a>
+    </div>
+    <p class="footer-copyright">Not a medical or dietary advisory service. Use at your own risk.</p>
+  </div>
+</footer>
+
+<nav class="bottom-tab-bar" data-testid="nav-bottom-tabs">
+  <div class="tab-items">
+    <a href="/" class="tab-item" data-testid="tab-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/family.html" class="tab-item" data-testid="tab-cook">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/><path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/></svg>
+      Cook
+    </a>
+    <a href="/order.html" class="tab-item" data-testid="tab-order">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+      Order
+    </a>
+    <a href="/my-pantry" class="tab-item" data-testid="tab-pantry">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/><path d="m15 7-3 3-3-3"/></svg>
+      Pantry
+    </a>
+    <a href="/profile.html" class="tab-item active" data-testid="tab-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </a>
+  </div>
+</nav>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => console.log('SW registered'))
+        .catch(err => console.log('SW registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
